@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ReversiMvcApp.Helpers;
+using ReversiMvcApp.Services;
 
 namespace ReversiMvcApp.Controllers
 {
@@ -16,11 +18,13 @@ namespace ReversiMvcApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ReversiDbContext _context;
+        private readonly IApiService _apiService;
 
-        public HomeController(ILogger<HomeController> logger, ReversiDbContext context)
+        public HomeController(ILogger<HomeController> logger, ReversiDbContext context, IApiService apiService)
         {
             _context = context;
             _logger = logger;
+            _apiService = apiService;
         }
 
         [Authorize]
@@ -28,7 +32,7 @@ namespace ReversiMvcApp.Controllers
         {
             ClaimsPrincipal currentUser = this.User;
             var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-           
+            
             if(await _context.Players.FindAsync(currentUserID) == null)
             {
                 var player = new Player
@@ -38,6 +42,14 @@ namespace ReversiMvcApp.Controllers
                 await _context.Players.AddAsync(player);
                 await _context.SaveChangesAsync();
             }
+
+            var descriptions = await _apiService.GetPendingGames();
+            if (descriptions.Failure)
+            {
+                Console.WriteLine(descriptions.Error);
+                return Error();
+            }
+            ViewData["Descriptions"] = descriptions.Value;
             return View();
         }
 

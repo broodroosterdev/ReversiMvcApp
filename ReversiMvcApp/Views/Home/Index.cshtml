@@ -1,8 +1,23 @@
-﻿@{
+﻿@using ReversiMvcApp.Schemas
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1 class="pb-2">Pending games</h1>
+<a role="button" class="btn btn-info" asp-action="New" asp-controller="Game">Create new game</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Description</th>
+        <th scope="col">Token</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (PendingGame game in ViewData["Descriptions"] as IEnumerable<PendingGame>)
+    {
+        <tr>
+            <td>@game.Description</td>
+            <td>@game.GameToken</td>
+        </tr>
+    }
+   </tbody> 
+</table>

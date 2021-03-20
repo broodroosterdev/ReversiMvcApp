@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ReversiMvcApp.Services;
 
 namespace ReversiMvcApp
 {
@@ -33,6 +34,7 @@ namespace ReversiMvcApp
             services.AddDbContext<ReversiDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReversiDB")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddSingleton<IApiService>(_ => new ApiService(Configuration.GetSection("ApiUrl").Value));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

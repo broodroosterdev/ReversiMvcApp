@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Create a new Game";
+}
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-action="NewPost">
+    <fieldset>
+        <legend>Create new game</legend>
+        <div>
+            <label for="Description">Description</label>
+            <input type="text" name="Description" value=""/>
+            @Html.ValidationMessage("description")
+        </div>
+        <div>
+            <button type="submit">Create</button>
+        </div>
+    </fieldset>
+</form>

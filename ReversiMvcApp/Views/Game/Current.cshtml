@@ -1,0 +1,15 @@
+﻿@using ReversiMvcApp.Schemas
+@{
+    ViewData["Title"] = "This is your current game";
+    var game = ViewData["Game"] as Game;
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Description:</p>
+@game.Description
+<p>Game token:</p>
+@game.Token
+<p>Player1 Token:</p>
+@game.Player1Token
+<p>Player2 Token:</p>
+@game.Player2Token
